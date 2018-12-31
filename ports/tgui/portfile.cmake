@@ -34,15 +34,14 @@ vcpkg_configure_cmake(
 vcpkg_install_cmake()
 vcpkg_copy_pdbs()
 
-# remove stuff? 
-file(GLOB LICENSE
+file(GLOB TEXTFILES
   "${CURRENT_PACKAGES_DIR}/debug/license.txt"
   "${CURRENT_PACKAGES_DIR}/license.txt"
   "${CURRENT_PACKAGES_DIR}/debug/README.md"
   "${CURRENT_PACKAGES_DIR}/README.md"
 )
-if(LICENSE)
-  file(REMOVE ${LICENSE})
+if(TEXTFILES)
+  file(REMOVE ${TEXTFILES})
 endif()
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
@@ -51,6 +50,3 @@ file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
 file(INSTALL ${SOURCE_PATH}/license.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/tgui RENAME copyright)
 
 vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/TGUI)
-
-# Post-build test for cmake libraries
-# vcpkg_test_cmake(PACKAGE_NAME tgui 8.2)
