@@ -11,7 +11,7 @@
 #
 
 include(vcpkg_common_functions)
-set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/tgui-0.8.2)
+set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/TGUI-0.8.2)
 vcpkg_download_distfile(ARCHIVE
     URLS "https://github.com/texus/TGUI/archive/v0.8.2.zip"
     FILENAME "tgui-0.8.2.zip"
@@ -22,14 +22,13 @@ vcpkg_extract_source_archive(${ARCHIVE})
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" TGUI_SHARED_LIBS)
 string(COMPARE EQUAL "${VCPKG_CRT_LINKAGE}" "static" TGUI_STATIC_STD_LIBS)
 
+set(ENV{SFML_DIR} "${CURRENT_PACKAGES_DIR}/share/sfml" PARENT_SCOPE)
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
-    PREFER_NINJA # Disable this option if project cannot be built with Ninja
+    PREFER_NINJA
     OPTIONS -DTGUI_SHARED_LIBS=${TGUI_SHARED_LIBS}
     OPTIONS -DTGUI_USE_STATIC_STD_LIBS=${TGUI_STATIC_STD_LIBS}
-    # OPTIONS -DUSE_THIS_IN_ALL_BUILDS=1 -DUSE_THIS_TOO=2
-    # OPTIONS_RELEASE -DOPTIMIZE=1
-    # OPTIONS_DEBUG -DDEBUGGABLE=1
 )
 
 vcpkg_install_cmake()
@@ -46,11 +45,12 @@ if(LICENSE)
   file(REMOVE ${LICENSE})
 endif()
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
 
 # Handle copyright
 file(INSTALL ${SOURCE_PATH}/license.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/tgui RENAME copyright)
 
-vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/tgui)
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/TGUI)
 
 # Post-build test for cmake libraries
 # vcpkg_test_cmake(PACKAGE_NAME tgui 8.2)
